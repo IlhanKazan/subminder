@@ -54,7 +54,7 @@ The project follows the Layered Architecture pattern:
 2.  Run with Docker Compose:
     This command builds the Go application and sets up the PostgreSQL database.
     ```bash
-    docker-compose up --build
+    docker compose up --build
     ```
 
 3.  Access the Application:
@@ -76,7 +76,7 @@ The project includes an automatic **Seeder** that inserts mock data. To see the 
 * **Stop only:** Press `Ctrl + C` in the terminal.
 * **Stop and Remove Containers:** Run the following command:
     ```bash
-    docker-compose down
+    docker compose down
     ```
 
 > **Note:** These commands work on Windows, macOS, and Linux.
