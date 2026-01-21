@@ -1,0 +1,193 @@
+basePath: /api/v1
+definitions:
+  subminder_internal_domain.CategoryResponse:
+    properties:
+      description:
+        type: string
+      id:
+        type: integer
+      name:
+        type: string
+      subscriptions:
+        items:
+          $ref: '#/definitions/subminder_internal_domain.SubscriptionResponse'
+        type: array
+    type: object
+  subminder_internal_domain.CreateCategoryRequest:
+    properties:
+      description:
+        type: string
+      name:
+        type: string
+    required:
+    - name
+    type: object
+  subminder_internal_domain.CreateSubscriptionRequest:
+    properties:
+      billing_cycle:
+        enum:
+        - Monthly
+        - Yearly
+        type: string
+      category_id:
+        type: integer
+      currency:
+        enum:
+        - TRY
+        - USD
+        - EUR
+        type: string
+      name:
+        type: string
+      price:
+        minimum: 0
+        type: number
+      renewal_date:
+        type: string
+      start_date:
+        type: string
+    required:
+    - category_id
+    - currency
+    - name
+    - price
+    type: object
+  subminder_internal_domain.SubscriptionResponse:
+    properties:
+      active:
+        type: boolean
+      billing_cycle:
+        type: string
+      category_id:
+        type: integer
+      currency:
+        type: string
+      id:
+        type: integer
+      name:
+        type: string
+      price:
+        type: number
+      renewal_date:
+        type: string
+      start_date:
+        type: string
+    type: object
+host: localhost:8080
+info:
+  contact: {}
+  description: A RESTful API to track subscriptions and calculate renewal dates.
+  title: SubMinder API
+  version: "1.0"
+paths:
+  /categories:
+    get:
+      description: Retrieves a list of all categories for subscriptions.
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/subminder_internal_domain.CategoryResponse'
+            type: array
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: List all categories
+      tags:
+      - categories
+    post:
+      consumes:
+      - application/json
+      description: Adds a new category to the database with validation.
+      parameters:
+      - description: Category Data
+        in: body
+        name: category
+        required: true
+        schema:
+          $ref: '#/definitions/subminder_internal_domain.CreateCategoryRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/subminder_internal_domain.CategoryResponse'
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Create a new category for subscriptions
+      tags:
+      - categories
+  /subscriptions:
+    get:
+      description: Retrieves a list of all active and passive subscriptions.
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/subminder_internal_domain.SubscriptionResponse'
+            type: array
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: List all subscriptions
+      tags:
+      - subscriptions
+    post:
+      consumes:
+      - application/json
+      description: Adds a new subscription to the database with validation.
+      parameters:
+      - description: Subscription Data
+        in: body
+        name: subscription
+        required: true
+        schema:
+          $ref: '#/definitions/subminder_internal_domain.CreateSubscriptionRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/subminder_internal_domain.SubscriptionResponse'
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Create a new subscription
+      tags:
+      - subscriptions
+schemes:
+- http
+swagger: "2.0"

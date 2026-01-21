@@ -1,0 +1,16 @@
+subminder
+subminder.exe
+*.exe
+*.dll
+*.so
+*.dylib
+
+.idea/
+*.iml
+
+vendor/
+
+.DS_Store
+Thumbs.db
+
+postgres_data/
